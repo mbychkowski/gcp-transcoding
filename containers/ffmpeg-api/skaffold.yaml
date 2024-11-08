@@ -34,7 +34,9 @@ profiles:
       releases:
       - name: ffmpeg-api
         # chartPath: ./manifests/chart
-        remoteChart: us-central1-docker.pkg.dev/prj-kokiri-2/charts/ffmpeg-api:0.1.0
+        repo: oci://us-central1-docker.pkg.dev/prj-kokiri-2/charts
+        remoteChart: ffmpeg-api
+        version: 0.1.0
         namespace: jobs
         createNamespace: true
         setValueTemplates:
