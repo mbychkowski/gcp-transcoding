@@ -33,9 +33,12 @@ profiles:
     helm:
       releases:
       - name: ffmpeg-api
-        # chartPath: ./manifests/chart
-        remoteChart: oci://us-central1-docker.pkg.dev/prj-kokiri-2/charts/ffmpeg-api
-        version: 0.1.0
+        chartPath: ./manifests/chart
+        # If leveraging a remote chart uncomment the following blocks and update
+        # accordingly.
+
+        # remoteChart: oci://<gcp-location>-docker.pkg.dev/<project-id>/charts/ffmpeg-api
+        # version: 0.1.0
         namespace: jobs
         createNamespace: true
         setValueTemplates:

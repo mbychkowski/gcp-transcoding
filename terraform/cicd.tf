@@ -30,7 +30,7 @@ resource "google_clouddeploy_delivery_pipeline" "primary" {
   serial_pipeline {
     stages {
       profiles  = ["profile-dev"]
-      target_id = "target-primary-gke-dev"
+      target_id = "target-primary-gke-dev-2"
       strategy {
         standard {
           verify = true
@@ -78,6 +78,32 @@ resource "google_clouddeploy_target" "primary-dev" {
   labels = {
     runtime = "gke"
     env = "dev"
+  }
+
+}
+
+resource "google_clouddeploy_target" "primary-dev-2" {
+  depends_on  = [module.cicd_execution_service_accounts, module.cicd_trigger_service_account]
+  name        = "target-primary-gke-dev-2"
+  description = "01.2 Primary cluster for dev (internal, autopush, integration tests)"
+  project     = "prj-kokiri-1"
+  location    = var.region
+
+  gke {
+    cluster = "autopilot-cluster-1"
+  }
+
+  execution_configs {
+    usages            = ["RENDER", "DEPLOY", "VERIFY"]
+    service_account   = "sa-${var.customer_id}-exe-cicd@${local.project.id}.iam.gserviceaccount.com"
+  }
+
+  require_approval = false
+
+  labels = {
+    runtime = "gke"
+    env = "dev"
+    prj = "prj-2"
   }
 
 }
