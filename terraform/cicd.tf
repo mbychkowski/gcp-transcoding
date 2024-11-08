@@ -86,7 +86,7 @@ resource "google_clouddeploy_target" "primary-dev-2" {
   depends_on  = [module.cicd_execution_service_accounts, module.cicd_trigger_service_account]
   name        = "target-primary-gke-dev-2"
   description = "01.2 Primary cluster for dev (internal, autopush, integration tests)"
-  project     = "prj-kokiri-1"
+  project     = "prj-kokiri-dev"
   location    = var.region
 
   gke {
