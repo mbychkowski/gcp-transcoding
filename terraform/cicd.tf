@@ -21,7 +21,7 @@ resource "google_artifact_registry_repository" "repo" {
 
 # Cloud Deploy | Pipeline
 resource "google_clouddeploy_delivery_pipeline" "primary" {
-  depends_on  = [module.execution_service_accounts, module.trigger_service_account]
+  depends_on  = [module.cicd_execution_service_accounts, module.cicd_trigger_service_account]
   name        = "ffmpeg-api-cd"
   description = "Delivery pipeline for FFMPEG API (in Python)."
   project     = local.project.id
@@ -58,7 +58,7 @@ resource "google_clouddeploy_delivery_pipeline" "primary" {
 
 # Cloud Deploy | Targets
 resource "google_clouddeploy_target" "primary-dev" {
-  depends_on  = [module.execution_service_accounts, module.trigger_service_account]
+  depends_on  = [module.cicd_execution_service_accounts, module.cicd_trigger_service_account]
   name        = "target-primary-gke-dev"
   description = "01 Primary cluster for dev (internal, autopush, integration tests)"
   project     = local.project.id
@@ -83,7 +83,7 @@ resource "google_clouddeploy_target" "primary-dev" {
 }
 
 resource "google_clouddeploy_target" "primary-staging" {
-  depends_on  = [module.execution_service_accounts, module.trigger_service_account]
+  depends_on  = [module.cicd_execution_service_accounts, module.cicd_trigger_service_account]
   name        = "target-primary-gke-staging"
   description = "02 Primary cluster for staging (staging)"
   project     = local.project.id
@@ -107,7 +107,7 @@ resource "google_clouddeploy_target" "primary-staging" {
 }
 
 resource "google_clouddeploy_target" "primary-prod" {
-  depends_on  = [module.execution_service_accounts, module.trigger_service_account]
+  depends_on  = [module.cicd_execution_service_accounts, module.cicd_trigger_service_account]
   name        = "target-primary-gke-prod"
   description = "03 Primary cluster for prod (prod)"
   project     = local.project.id
@@ -163,7 +163,7 @@ module "cicd_execution_service_accounts" {
 }
 
 resource "google_service_account_iam_member" "tri_sa_actas_exe_sa" {
-  depends_on         = [module.execution_service_accounts, module.trigger_service_account]
+  depends_on         = [module.cicd_execution_service_accounts, module.cicd_trigger_service_account]
   service_account_id = "projects/${local.project.id}/serviceAccounts/sa-${var.customer_id}-exe-cicd@${local.project.id}.iam.gserviceaccount.com"
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:sa-${var.customer_id}-tri-cicd@${local.project.id}.iam.gserviceaccount.com"
